@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
-import { LayoutDashboard, Users, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, LogOut, Settings } from "lucide-react";
 import { useNavigate } from "react-router";
 import WorkforceOverview from "./WorkforceOverview";
 import EmployeeCareerHistory from "./EmployeeCareerHistory";
+import Admin from "./Admin";
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
@@ -28,10 +29,11 @@ export default function Dashboard() {
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                Workforce Analytics
+                DevLeague{" "}
+                <span className="text-primary">SyncUp</span>
               </h1>
               <p className="text-sm text-muted-foreground">
-                Welcome{user?.name ? `, ${user.name}` : ""} — explore workforce insights and employee journeys
+                Welcome{user?.name ? `, ${user.name}` : ""} — here is your workforce at a glance
               </p>
             </div>
           </div>
@@ -57,6 +59,10 @@ export default function Dashboard() {
               <Users className="size-4" />
               Employee Careers
             </TabsTrigger>
+            <TabsTrigger value="admin" className="gap-2 text-sm">
+              <Settings className="size-4" />
+              Admin
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="mt-0">
@@ -65,6 +71,10 @@ export default function Dashboard() {
 
           <TabsContent value="career" className="mt-0">
             <EmployeeCareerHistory />
+          </TabsContent>
+
+          <TabsContent value="admin" className="mt-0">
+            <Admin />
           </TabsContent>
         </Tabs>
       </div>

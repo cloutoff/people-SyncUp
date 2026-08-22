@@ -7,9 +7,11 @@ import {
   TrendingUp,
   Clock,
   Building2,
-  Sparkles,
+  Terminal,
   ArrowRight,
   Shield,
+  GitBranch,
+  Database,
 } from "lucide-react";
 
 const fadeUp = {
@@ -25,30 +27,34 @@ const stagger = {
 const features = [
   {
     icon: BarChart3,
-    title: "Position Overview",
-    desc: "Visual breakdowns of headcount, distribution, and hiring trends across departments.",
+    title: "Position Analytics",
+    desc:
+      "Headcount distribution, departmental breakdowns, and year-over-year growth — all rendered in real time.",
   },
   {
-    icon: TrendingUp,
-    title: "Promotion Insights",
-    desc: "Track promotion velocity, departmental growth, and career progression patterns.",
+    icon: GitBranch,
+    title: "Promotion Tracking",
+    desc:
+      "Map every promotion event across teams, measure velocity, and surface patterns in advancement cycles.",
   },
   {
     icon: Clock,
     title: "Career Timelines",
-    desc: "Interactive employee timelines showing every role transition and tenure.",
+    desc:
+      "Drill into any employee's journey: every role transition, reporting relationship, and tenure duration.",
   },
   {
-    icon: Users,
-    title: "Employee Journeys",
-    desc: "Full career path visualization with years-in-role analytics and history.",
+    icon: Database,
+    title: "Role Intelligence",
+    desc:
+      "Maintain a clean view of role history, departmental assignments, and the change reasons behind every move.",
   },
 ];
 
 const stats = [
-  { label: "Roles Tracked", value: "12+" },
+  { label: "Roles Modeled", value: "12+" },
   { label: "Departments", value: "6" },
-  { label: "Career Paths", value: "15+" },
+  { label: "Journeys Tracked", value: "25+" },
   { label: "Promotions", value: "14" },
 ];
 
@@ -65,17 +71,20 @@ export default function Landing() {
         className="relative px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-24 sm:pb-28"
       >
         {/* Decorative blurred orbs */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+        <div
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+          aria-hidden
+        >
           <div className="absolute -top-32 -left-32 size-96 rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute top-20 right-0 size-80 rounded-full bg-chart-5/10 blur-3xl" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 size-[500px] rounded-full bg-chart-2/8 blur-3xl" />
+          <div className="absolute top-20 right-0 size-80 rounded-full bg-chart-5/8 blur-3xl" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 size-[500px] rounded-full bg-chart-2/6 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-4xl text-center">
           <motion.div variants={fadeUp} className="flex justify-center mb-6">
             <span className="glass-strong inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-primary">
-              <Sparkles className="size-3.5" />
-              Workforce Intelligence Platform
+              <Terminal className="size-3.5" />
+              Workforce Intelligence for Engineering Teams
             </span>
           </motion.div>
 
@@ -83,10 +92,9 @@ export default function Landing() {
             variants={fadeUp}
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.1]"
           >
-            See Your Workforce
-            <br />
-            <span className="bg-gradient-to-r from-primary via-chart-2 to-primary bg-clip-text text-transparent">
-              Clearly
+            DevLeague{" "}
+            <span className="bg-gradient-to-r from-primary via-chart-2 to-chart-5 bg-clip-text text-transparent">
+              SyncUp
             </span>
           </motion.h1>
 
@@ -94,11 +102,15 @@ export default function Landing() {
             variants={fadeUp}
             className="mt-5 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
           >
-            Interactive dashboards for position overview, career tracking, and
-            promotion analytics — built for HR leaders who move fast.
+            Visualize position history, track promotions, and map employee
+            careers across your organization — with an interface built for
+            teams that ship fast.
           </motion.p>
 
-          <motion.div variants={fadeUp} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <motion.div
+            variants={fadeUp}
+            className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
+          >
             <Button
               size="lg"
               className="gap-2 px-7 text-sm font-semibold shadow-lg shadow-primary/20"
@@ -114,7 +126,7 @@ export default function Landing() {
               onClick={() => navigate("/auth?returnTo=/dashboard")}
             >
               <Shield className="size-4" />
-              View Dashboard
+              Open Dashboard
             </Button>
           </motion.div>
         </div>
@@ -131,7 +143,9 @@ export default function Landing() {
         <div className="mx-auto max-w-3xl glass-strong rounded-2xl px-6 py-6 grid grid-cols-2 sm:grid-cols-4 gap-6">
           {stats.map((s) => (
             <div key={s.label} className="text-center">
-              <p className="text-2xl sm:text-3xl font-bold text-foreground">{s.value}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-foreground">
+                {s.value}
+              </p>
               <p className="text-xs text-muted-foreground mt-1">{s.label}</p>
             </div>
           ))}
@@ -148,10 +162,11 @@ export default function Landing() {
             className="text-center mb-12"
           >
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-              Everything You Need to Understand Your People
+              One Dashboard for the Full Workforce Picture
             </h2>
             <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
-              Deep analytics across every dimension of your workforce.
+              Every metric, chart, and career timeline your team needs to make
+              better people decisions.
             </p>
           </motion.div>
 
@@ -169,8 +184,12 @@ export default function Landing() {
                   <f.icon className="size-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-foreground">{f.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{f.desc}</p>
+                  <h3 className="text-sm font-semibold text-foreground">
+                    {f.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                    {f.desc}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -188,18 +207,18 @@ export default function Landing() {
         >
           <Building2 className="size-8 text-primary mx-auto mb-4" />
           <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-            Ready to transform your workforce data?
+            Ready to get your org in sync?
           </h2>
           <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
-            Sign in to access interactive charts, employee journeys, and real-time
-            analytics across your organization.
+            Sign in to access real-time charts, employee journey maps, and
+            promotion analytics — all from a single control plane.
           </p>
           <Button
             size="lg"
             className="mt-6 gap-2 px-8 text-sm font-semibold shadow-lg shadow-primary/20"
             onClick={() => navigate("/auth?returnTo=/dashboard")}
           >
-            Launch Dashboard
+            Launch SyncUp
             <ArrowRight className="size-4" />
           </Button>
         </motion.div>
@@ -208,7 +227,7 @@ export default function Landing() {
       {/* ─── Footer ───────────────────────────────────────────── */}
       <footer className="border-t border-border/40 px-4 sm:px-6 lg:px-8 py-6">
         <p className="text-center text-xs text-muted-foreground">
-          Workforce Analytics Dashboard · Built with Glassmorphism
+          DevLeague SyncUp · Workforce Position History &amp; Performance
         </p>
       </footer>
     </div>

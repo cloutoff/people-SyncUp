@@ -333,10 +333,10 @@ export default function EmployeeCareerHistory() {
 
   const statusColor =
     emp?.employment_status === "Active"
-      ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+      ? "border-emerald-500/30 text-emerald-400"
       : emp?.employment_status === "On Leave"
-        ? "bg-amber-50 text-amber-700 border-amber-200"
-        : "bg-rose-50 text-rose-700 border-rose-200";
+        ? "border-amber-500/30 text-amber-400"
+        : "border-rose-500/30 text-rose-400";
 
   return (
     <div className="space-y-6">
@@ -354,7 +354,7 @@ export default function EmployeeCareerHistory() {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-bold text-foreground">{emp.employee_name}</h2>
-              <Badge variant="outline" className={`text-[10px] border ${statusColor}`}>
+              <Badge variant="outline" className={`text-[10px] ${statusColor}`}>
                 {emp.employment_status}
               </Badge>
             </div>

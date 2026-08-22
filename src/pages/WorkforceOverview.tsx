@@ -6,7 +6,6 @@ import {
   getPositionByYear,
   getPromotionTrends,
   departments,
-  personJourneys,
 } from "@/data/workforce";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Users, TrendingUp, Briefcase, Building2, Filter } from "lucide-react";
@@ -25,24 +24,27 @@ import {
 } from "recharts";
 
 const CHART_COLORS = [
-  "oklch(0.55 0.18 255)",
-  "oklch(0.62 0.15 180)",
-  "oklch(0.70 0.14 150)",
-  "oklch(0.65 0.16 45)",
-  "oklch(0.58 0.17 320)",
-  "oklch(0.50 0.14 280)",
-  "oklch(0.55 0.12 100)",
-  "oklch(0.60 0.13 200)",
+  "oklch(0.72 0.16 200)",
+  "oklch(0.70 0.15 170)",
+  "oklch(0.65 0.14 150)",
+  "oklch(0.74 0.15 50)",
+  "oklch(0.68 0.17 310)",
+  "oklch(0.72 0.12 250)",
+  "oklch(0.65 0.13 100)",
+  "oklch(0.70 0.14 200)",
 ];
 
 const DEPT_COLORS: Record<string, string> = {
-  Engineering: "oklch(0.55 0.18 255)",
-  Marketing: "oklch(0.62 0.15 180)",
-  "Human Resources": "oklch(0.70 0.14 150)",
-  Design: "oklch(0.65 0.16 45)",
-  Sales: "oklch(0.58 0.17 320)",
-  Executive: "oklch(0.50 0.14 280)",
+  Engineering: "oklch(0.72 0.16 200)",
+  Marketing: "oklch(0.70 0.15 170)",
+  "Human Resources": "oklch(0.65 0.14 150)",
+  Design: "oklch(0.74 0.15 50)",
+  Sales: "oklch(0.68 0.17 310)",
+  Executive: "oklch(0.72 0.12 250)",
 };
+
+const GRID_STROKE = "rgba(255, 255, 255, 0.06)";
+const TICK_FILL = "rgba(255, 255, 255, 0.4)";
 
 function GlassTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
@@ -152,13 +154,13 @@ export default function WorkforceOverview() {
                 layout="vertical"
                 margin={{ left: 10, right: 20, top: 0, bottom: 0 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.85 0.02 240 / 40%)" horizontal={false} />
-                <XAxis type="number" tick={{ fontSize: 11, fill: "oklch(0.50 0.02 260)" }} />
+                <CartesianGrid strokeDasharray="3 3" stroke={GRID_STROKE} horizontal={false} />
+                <XAxis type="number" tick={{ fontSize: 11, fill: TICK_FILL }} />
                 <YAxis
                   type="category"
                   dataKey="name"
                   width={140}
-                  tick={{ fontSize: 11, fill: "oklch(0.50 0.02 260)" }}
+                  tick={{ fontSize: 11, fill: TICK_FILL }}
                 />
                 <Tooltip content={<GlassTooltip />} />
                 <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={18}>
@@ -178,12 +180,12 @@ export default function WorkforceOverview() {
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={positionByYear} margin={{ left: 0, right: 10, top: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.85 0.02 240 / 40%)" vertical={false} />
-                <XAxis dataKey="year" tick={{ fontSize: 11, fill: "oklch(0.50 0.02 260)" }} />
-                <YAxis tick={{ fontSize: 11, fill: "oklch(0.50 0.02 260)" }} />
+                <CartesianGrid strokeDasharray="3 3" stroke={GRID_STROKE} vertical={false} />
+                <XAxis dataKey="year" tick={{ fontSize: 11, fill: TICK_FILL }} />
+                <YAxis tick={{ fontSize: 11, fill: TICK_FILL }} />
                 <Tooltip content={<GlassTooltip />} />
                 <Legend
-                  wrapperStyle={{ fontSize: 11, color: "oklch(0.50 0.02 260)" }}
+                  wrapperStyle={{ fontSize: 11, color: TICK_FILL }}
                   iconSize={10}
                 />
                 {yearChartDepts.map((dept) => (
@@ -191,7 +193,7 @@ export default function WorkforceOverview() {
                     key={dept}
                     dataKey={dept}
                     stackId="a"
-                    fill={DEPT_COLORS[dept] || "oklch(0.55 0.12 200)"}
+                    fill={DEPT_COLORS[dept] || "oklch(0.70 0.12 200)"}
                     fillOpacity={0.8}
                     radius={dept === yearChartDepts[yearChartDepts.length - 1] ? [4, 4, 0, 0] : [0, 0, 0, 0]}
                   />
@@ -211,22 +213,22 @@ export default function WorkforceOverview() {
             <AreaChart data={promotionTrends} margin={{ left: 0, right: 10, top: 10, bottom: 0 }}>
               <defs>
                 <linearGradient id="promoGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="oklch(0.55 0.18 255)" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="oklch(0.55 0.18 255)" stopOpacity={0.02} />
+                  <stop offset="0%" stopColor="oklch(0.72 0.16 200)" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="oklch(0.72 0.16 200)" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.85 0.02 240 / 40%)" vertical={false} />
-              <XAxis dataKey="year" tick={{ fontSize: 11, fill: "oklch(0.50 0.02 260)" }} />
-              <YAxis tick={{ fontSize: 11, fill: "oklch(0.50 0.02 260)" }} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={GRID_STROKE} vertical={false} />
+              <XAxis dataKey="year" tick={{ fontSize: 11, fill: TICK_FILL }} />
+              <YAxis tick={{ fontSize: 11, fill: TICK_FILL }} allowDecimals={false} />
               <Tooltip content={<GlassTooltip />} />
               <Area
                 type="monotone"
                 dataKey="promotions"
-                stroke="oklch(0.55 0.18 255)"
+                stroke="oklch(0.72 0.16 200)"
                 strokeWidth={2.5}
                 fill="url(#promoGradient)"
-                dot={{ r: 4, fill: "oklch(0.55 0.18 255)", stroke: "#fff", strokeWidth: 2 }}
-                activeDot={{ r: 6, fill: "oklch(0.55 0.18 255)", stroke: "#fff", strokeWidth: 2 }}
+                dot={{ r: 4, fill: "oklch(0.72 0.16 200)", stroke: "rgba(22, 24, 40, 0.8)", strokeWidth: 2 }}
+                activeDot={{ r: 6, fill: "oklch(0.72 0.16 200)", stroke: "rgba(22, 24, 40, 0.8)", strokeWidth: 2 }}
               />
             </AreaChart>
           </ResponsiveContainer>
