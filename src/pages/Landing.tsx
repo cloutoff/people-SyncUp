@@ -114,7 +114,7 @@ export default function Landing() {
             <Button
               size="lg"
               className="gap-2 px-7 text-sm font-semibold shadow-lg shadow-primary/20"
-              onClick={() => navigate("/auth?returnTo=/dashboard")}
+              onClick={() => navigate("/dashboard")}
             >
               Get Started
               <ArrowRight className="size-4" />
@@ -123,7 +123,7 @@ export default function Landing() {
               size="lg"
               variant="outline"
               className="glass-subtle gap-2 px-7 text-sm"
-              onClick={() => navigate("/auth?returnTo=/dashboard")}
+              onClick={() => navigate("/dashboard")}
             >
               <Shield className="size-4" />
               Open Dashboard
@@ -216,7 +216,7 @@ export default function Landing() {
           <Button
             size="lg"
             className="mt-6 gap-2 px-8 text-sm font-semibold shadow-lg shadow-primary/20"
-            onClick={() => navigate("/auth?returnTo=/dashboard")}
+            onClick={() => navigate("/dashboard")}
           >
             Launch Sync Up
             <ArrowRight className="size-4" />
