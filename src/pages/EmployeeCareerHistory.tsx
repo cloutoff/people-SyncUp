@@ -16,7 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   User,
   Calendar,
@@ -25,35 +27,93 @@ import {
   Clock,
   Trophy,
   ChevronRight,
+  Search,
+  Users,
 } from "lucide-react";
 
-// ─── Employee Selector ───────────────────────────────────────────────
+// ─── Employee Search Table ───────────────────────────────────────────
 
-function EmployeeSelector({
+function EmployeeSearchTable({
   selectedId,
   onSelect,
 }: {
   selectedId: string;
   onSelect: (id: string) => void;
 }) {
+  const [search, setSearch] = useState("");
+
+  const filtered = employees.filter(
+    (e) =>
+      e.employee_name.toLowerCase().includes(search.toLowerCase()) ||
+      e.employee_id.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="glass-card p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
-      <User className="size-4 text-primary shrink-0" />
-      <span className="text-sm font-medium text-muted-foreground">Select Employee</span>
-      <Select value={selectedId} onValueChange={onSelect}>
-        <SelectTrigger className="w-64 glass-subtle">
-          <SelectValue placeholder="Choose an employee" />
-        </SelectTrigger>
-        <SelectContent>
-          {employees.map((e) => (
-            <SelectItem key={e.employee_id} value={e.employee_id}>
-              <span className="font-medium">{e.employee_name}</span>
-              <span className="ml-2 text-xs text-muted-foreground">({e.employee_id})</span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <GlassCard>
+      <div className="flex items-center gap-2 mb-4">
+        <Users className="size-4 text-primary" />
+        <h3 className="text-sm font-semibold text-foreground">Employee Directory</h3>
+      </div>
+      <div className="relative mb-4">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+        <Input
+          placeholder="Search by name or employee ID..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pl-9 glass-subtle border-0"
+        />
+      </div>
+      <div className="glass-card overflow-hidden max-h-64 overflow-y-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="border-border/50 hover:bg-transparent">
+              <TableHead className="text-xs">ID</TableHead>
+              <TableHead className="text-xs">Name</TableHead>
+              <TableHead className="text-xs">Joined</TableHead>
+              <TableHead className="text-xs">Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.map((e) => (
+              <TableRow
+                key={e.employee_id}
+                className={`border-border/30 cursor-pointer transition-colors ${
+                  selectedId === e.employee_id
+                    ? "bg-primary/10 hover:bg-primary/15"
+                    : "hover:bg-white/5"
+                }`}
+                onClick={() => onSelect(e.employee_id)}
+              >
+                <TableCell className="font-mono text-xs">{e.employee_id}</TableCell>
+                <TableCell className="text-sm font-medium">{e.employee_name}</TableCell>
+                <TableCell className="text-xs text-muted-foreground">{e.join_date}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant="outline"
+                    className={`text-[10px] ${
+                      e.employment_status === "Active"
+                        ? "border-emerald-500/30 text-emerald-400"
+                        : e.employment_status === "On Leave"
+                          ? "border-amber-500/30 text-amber-400"
+                          : "border-rose-500/30 text-rose-400"
+                    }`}
+                  >
+                    {e.employment_status}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+            {filtered.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center py-6 text-muted-foreground text-sm">
+                  No employees match your search.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </GlassCard>
   );
 }
 
@@ -340,7 +400,7 @@ export default function EmployeeCareerHistory() {
 
   return (
     <div className="space-y-6">
-      <EmployeeSelector selectedId={selectedId} onSelect={setSelectedId} />
+      <EmployeeSearchTable selectedId={selectedId} onSelect={setSelectedId} />
 
       {/* Employee summary */}
       {emp && (

@@ -212,6 +212,32 @@ export function getPositionByYear(dept?: string) {
   }));
 }
 
+/** Position by year broken down by role title (used when a single department is filtered) */
+export function getPositionByYearByRole(dept: string) {
+  const filtered = personJourneys.filter((j) => j.department === dept);
+  const result: Record<number, Record<string, number>> = {};
+
+  years.forEach((y) => {
+    result[y] = {};
+  });
+
+  filtered.forEach((j) => {
+    const startYear = new Date(j.start_date).getFullYear();
+    const endYear = j.end_date ? new Date(j.end_date).getFullYear() : new Date().getFullYear();
+
+    for (let y = Math.max(startYear, Math.min(...years)); y <= Math.min(endYear, Math.max(...years)); y++) {
+      if (result[y]) {
+        result[y][j.role_title] = (result[y][j.role_title] || 0) + 1;
+      }
+    }
+  });
+
+  return years.map((y) => ({
+    year: y.toString(),
+    ...result[y],
+  }));
+}
+
 /** Promotion count by year */
 export function getPromotionTrends(dept?: string) {
   const filtered = dept

@@ -92,10 +92,10 @@ export default function Landing() {
             variants={fadeUp}
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.1]"
           >
-            DevLeague{" "}
             <span className="bg-gradient-to-r from-primary via-chart-2 to-chart-5 bg-clip-text text-transparent">
-              SyncUp
-            </span>
+              Sync
+            </span>{" "}
+            Up
           </motion.h1>
 
           <motion.p
@@ -218,7 +218,7 @@ export default function Landing() {
             className="mt-6 gap-2 px-8 text-sm font-semibold shadow-lg shadow-primary/20"
             onClick={() => navigate("/auth?returnTo=/dashboard")}
           >
-            Launch SyncUp
+            Launch Sync Up
             <ArrowRight className="size-4" />
           </Button>
         </motion.div>
@@ -227,7 +227,7 @@ export default function Landing() {
       {/* ─── Footer ───────────────────────────────────────────── */}
       <footer className="border-t border-border/40 px-4 sm:px-6 lg:px-8 py-6">
         <p className="text-center text-xs text-muted-foreground">
-          DevLeague SyncUp · Workforce Position History &amp; Performance
+          Sync Up · Workforce Position History &amp; Performance
         </p>
       </footer>
     </div>

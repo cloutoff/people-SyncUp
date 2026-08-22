@@ -4,6 +4,7 @@ import {
   getKPIData,
   getPositionDistribution,
   getPositionByYear,
+  getPositionByYearByRole,
   getPromotionTrends,
   departments,
 } from "@/data/workforce";
@@ -43,6 +44,19 @@ const DEPT_COLORS: Record<string, string> = {
   Executive: "oklch(0.72 0.12 250)",
 };
 
+const ROLE_COLORS = [
+  "oklch(0.72 0.16 200)",
+  "oklch(0.70 0.15 170)",
+  "oklch(0.65 0.14 150)",
+  "oklch(0.74 0.15 50)",
+  "oklch(0.68 0.17 310)",
+  "oklch(0.72 0.12 250)",
+  "oklch(0.65 0.13 100)",
+  "oklch(0.70 0.14 200)",
+  "oklch(0.76 0.13 80)",
+  "oklch(0.66 0.16 280)",
+];
+
 const GRID_STROKE = "rgba(255, 255, 255, 0.06)";
 const TICK_FILL = "rgba(255, 255, 255, 0.4)";
 
@@ -68,11 +82,17 @@ export default function WorkforceOverview() {
 
   const kpi = useMemo(() => getKPIData(deptFilter), [deptFilter]);
   const distribution = useMemo(() => getPositionDistribution(deptFilter), [deptFilter]);
-  const positionByYear = useMemo(() => getPositionByYear(deptFilter), [deptFilter]);
   const promotionTrends = useMemo(() => getPromotionTrends(deptFilter), [deptFilter]);
 
-  // Build stacked dept data for position by year
-  const yearChartDepts = useMemo(() => {
+  // When a specific department is selected, show role-level breakdown; otherwise department-level
+  const isSingleDept = selectedDept !== "all";
+  const positionByYear = useMemo(
+    () => (isSingleDept ? getPositionByYearByRole(selectedDept) : getPositionByYear()),
+    [isSingleDept, selectedDept]
+  );
+
+  // Build the list of keys to chart (departments or role titles)
+  const yearChartKeys = useMemo(() => {
     const set = new Set<string>();
     positionByYear.forEach((row) => {
       Object.keys(row).forEach((k) => {
@@ -81,6 +101,12 @@ export default function WorkforceOverview() {
     });
     return Array.from(set);
   }, [positionByYear]);
+
+  // Pick color source
+  const getKeyColor = (key: string, index: number) => {
+    if (isSingleDept) return ROLE_COLORS[index % ROLE_COLORS.length];
+    return DEPT_COLORS[key] || CHART_COLORS[index % CHART_COLORS.length];
+  };
 
   return (
     <div className="space-y-6">
@@ -173,10 +199,14 @@ export default function WorkforceOverview() {
           </div>
         </GlassCard>
 
-        {/* Position by Year — Stacked Bar */}
+        {/* Position by Year — Stacked Bar (role-level when dept filtered) */}
         <GlassCard>
           <h3 className="text-sm font-semibold text-foreground mb-1">Headcount by Year</h3>
-          <p className="text-xs text-muted-foreground mb-4">Department-level headcount over time</p>
+          <p className="text-xs text-muted-foreground mb-4">
+            {isSingleDept
+              ? `Role-level headcount in ${selectedDept}`
+              : "Department-level headcount over time"}
+          </p>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={positionByYear} margin={{ left: 0, right: 10, top: 0, bottom: 0 }}>
@@ -188,14 +218,14 @@ export default function WorkforceOverview() {
                   wrapperStyle={{ fontSize: 11, color: TICK_FILL }}
                   iconSize={10}
                 />
-                {yearChartDepts.map((dept) => (
+                {yearChartKeys.map((key, i) => (
                   <Bar
-                    key={dept}
-                    dataKey={dept}
+                    key={key}
+                    dataKey={key}
                     stackId="a"
-                    fill={DEPT_COLORS[dept] || "oklch(0.70 0.12 200)"}
+                    fill={getKeyColor(key, i)}
                     fillOpacity={0.8}
-                    radius={dept === yearChartDepts[yearChartDepts.length - 1] ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+                    radius={key === yearChartKeys[yearChartKeys.length - 1] ? [4, 4, 0, 0] : [0, 0, 0, 0]}
                   />
                 ))}
               </BarChart>

@@ -29,8 +29,7 @@ export default function Dashboard() {
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                DevLeague{" "}
-                <span className="text-primary">SyncUp</span>
+                <span className="text-primary">Sync</span> Up
               </h1>
               <p className="text-sm text-muted-foreground">
                 Welcome{user?.name ? `, ${user.name}` : ""} — here is your workforce at a glance
