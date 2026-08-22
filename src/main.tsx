@@ -80,7 +80,8 @@ class RootErrorBoundary extends React.Component<
   }
 }
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+const convexUrl = import.meta.env.VITE_CONVEX_URL;
+const convex = new ConvexReactClient(convexUrl || "https://placeholder.convex.cloud");
 
 
 
@@ -126,11 +127,7 @@ createRoot(document.getElementById("root")!).render(
               />
               <Route
                 path="/dashboard"
-                element={
-                  <RequireAuth>
-                    <Dashboard />
-                  </RequireAuth>
-                }
+                element={<Dashboard />}
               />
               <Route path="*" element={<NotFound />} />
             </Routes>
