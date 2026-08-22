@@ -79,13 +79,13 @@ export default function WorkforceOverview() {
   const [selectedDept, setSelectedDept] = useState<string>("all");
 
   const deptFilter = selectedDept === "all" ? undefined : selectedDept;
+  const isSingleDept = selectedDept !== "all";
 
   const kpi = useMemo(() => getKPIData(deptFilter), [deptFilter]);
   const distribution = useMemo(() => getPositionDistribution(deptFilter), [deptFilter]);
   const promotionTrends = useMemo(() => getPromotionTrends(deptFilter), [deptFilter]);
 
   // When a specific department is selected, show role-level breakdown; otherwise department-level
-  const isSingleDept = selectedDept !== "all";
   const positionByYear = useMemo(
     () => (isSingleDept ? getPositionByYearByRole(selectedDept) : getPositionByYear()),
     [isSingleDept, selectedDept]
@@ -169,10 +169,16 @@ export default function WorkforceOverview() {
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Position Distribution */}
+        {/* Position Distribution — department-level when All, role-level when filtered */}
         <GlassCard>
-          <h3 className="text-sm font-semibold text-foreground mb-1">Position Distribution</h3>
-          <p className="text-xs text-muted-foreground mb-4">Current headcount by role title</p>
+          <h3 className="text-sm font-semibold text-foreground mb-1">
+            {isSingleDept ? "Role Distribution" : "Department Distribution"}
+          </h3>
+          <p className="text-xs text-muted-foreground mb-4">
+            {isSingleDept
+              ? `Current headcount by role title in ${selectedDept}`
+              : "Current headcount by department"}
+          </p>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -190,8 +196,16 @@ export default function WorkforceOverview() {
                 />
                 <Tooltip content={<GlassTooltip />} />
                 <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={18}>
-                  {distribution.map((_, i) => (
-                    <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} fillOpacity={0.85} />
+                  {distribution.map((item, i) => (
+                    <Cell
+                      key={i}
+                      fill={
+                        isSingleDept
+                          ? ROLE_COLORS[i % ROLE_COLORS.length]
+                          : DEPT_COLORS[item.name] || CHART_COLORS[i % CHART_COLORS.length]
+                      }
+                      fillOpacity={0.85}
+                    />
                   ))}
                 </Bar>
               </BarChart>
@@ -199,9 +213,11 @@ export default function WorkforceOverview() {
           </div>
         </GlassCard>
 
-        {/* Position by Year — Stacked Bar (role-level when dept filtered) */}
+        {/* Position by Year — department-level when All, role-level when filtered */}
         <GlassCard>
-          <h3 className="text-sm font-semibold text-foreground mb-1">Headcount by Year</h3>
+          <h3 className="text-sm font-semibold text-foreground mb-1">
+            {isSingleDept ? "Role Headcount by Year" : "Department Headcount by Year"}
+          </h3>
           <p className="text-xs text-muted-foreground mb-4">
             {isSingleDept
               ? `Role-level headcount in ${selectedDept}`

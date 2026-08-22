@@ -172,12 +172,13 @@ export const years = [
   ),
 ].sort((a, b) => a - b);
 
-/** Position distribution: count of employees per role title (current) */
+/** Position distribution: department-level when no filter, role-level when dept is filtered */
 export function getPositionDistribution(dept?: string) {
   const latest = getLatestJourneyPerEmployee(dept);
   const dist: Record<string, number> = {};
   latest.forEach((j) => {
-    dist[j.role_title] = (dist[j.role_title] || 0) + 1;
+    const key = dept ? j.role_title : j.department;
+    dist[key] = (dist[key] || 0) + 1;
   });
   return Object.entries(dist)
     .map(([name, value]) => ({ name, value }))
