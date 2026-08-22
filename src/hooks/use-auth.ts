@@ -1,20 +1,12 @@
-import { api } from "@/convex/_generated/api";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useConvexAuth, useQuery } from "convex/react";
+// Local-only auth stub — works without a Convex backend.
+// Replace with the real hook once a Convex project is connected.
 
 export function useAuth() {
-  const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();
-  const user = useQuery(api.users.currentUser);
-  const { signIn, signOut } = useAuthActions();
-
-  // Derive isLoading directly from the dependencies instead of managing separate state
-  const isLoading = isAuthLoading || user === undefined;
-
   return {
-    isLoading,
-    isAuthenticated,
-    user,
-    signIn,
-    signOut,
+    isLoading: false,
+    isAuthenticated: true,
+    user: { name: "Local Dev" },
+    signIn: async (_method?: string, _formData?: FormData) => {},
+    signOut: async () => {},
   };
 }
